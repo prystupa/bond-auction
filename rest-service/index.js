@@ -1,5 +1,6 @@
 const express = require('express');
 const handleCreateAuction = require('./handleCreateAuction');
+const handleSendOrder = require('./handleSendOrder');
 
 const app = express();
 
@@ -10,5 +11,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/auctions', handleCreateAuction);
+app.post('/api/auctions/:id/orders', handleSendOrder);
 
 app.listen(3000, () => console.log('Listening on port 3000'));
