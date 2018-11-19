@@ -1,0 +1,60 @@
+version: "3.7"
+
+services:
+  message-bus:
+    image: rabbitmq:latest
+    hostname: message-bus
+    container_name: message-bus
+
+  event-sourcing-db:
+    image: mongo:latest
+    hostname: event-sourcing-db
+    container_name: event-sourcing-db
+
+  rest-service:
+    image: node:latest
+    hostname: rest-service
+    container_name: rest-service
+    working_dir: /home/node/app
+    volumes:
+    - ./rest-service/:/home/node/app
+    ports:
+    - 8080:3000
+    command: node index.js
+    restart: on-failure
+
+  trader-ui:
+    image: node:latest
+    hostname: trader-ui
+    container_name: trader-ui
+    working_dir: /home/node/app
+    volumes:
+    - ./trader-ui/:/home/node/app
+    ports:
+    - 3000:3000
+    command: npm start
+    restart: on-failure
+
+  event-sourcing:
+    image: node:latest
+    hostname: event-sourcing
+    container_name: event-sourcing
+    working_dir: /home/node/app
+    volumes:
+    - ./event-sourcing/:/home/node/app
+    command: node index.js
+    depends_on:
+    - event-sourcing-db
+    - message-bus
+    restart: on-failure
+
+  auction-runner:
+    image: node:latest
+    working_dir: /home/node/app
+    volumes:
+    - ./auction-runner/:/home/node/app
+    command: node index.js
+    depends_on:
+    - event-sourcing-db
+    - message-bus
+    restart: on-failure

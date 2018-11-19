@@ -1,0 +1,29 @@
+const request = require("request");
+const uuid = require('uuid/v4');
+
+function handleCreateAuction(req, res) {
+    const id = uuid();
+    const auction = {
+        ...req.body,
+        id
+    };
+
+    const event = {
+        auction,
+        key: `auction.${id}.create`
+    };
+
+    request({
+        url: 'http://event-sourcing:3000/api/event',
+        method: 'POST',
+        json: event
+    }, (error, response, body) => {
+        if (error) {
+            res.status(response.statusCode).send(body);
+        } else {
+            res.send(auction);
+        }
+    });
+}
+
+module.exports = handleCreateAuction;
