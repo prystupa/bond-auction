@@ -21,7 +21,7 @@ async function provisionAuctions() {
 
         const event = JSON.parse(content);
         auctionRunner(event.auction.id);
-    }, {noAck: true});
+    }, {noAck: false});
 }
 
 provisionAuctions()
