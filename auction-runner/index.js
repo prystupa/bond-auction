@@ -1,6 +1,8 @@
 const process = require('process');
 const amqp = require('amqplib');
 
+const auctionRunner = require('./auctionRunner');
+
 const EVENTS_EXCHANGE = "events";
 const CREATE_AUCTION_QUEUE = "create-auction";
 
@@ -14,7 +16,11 @@ async function provisionAuctions() {
 
     console.log(`Waiting to receive message from queue ${CREATE_AUCTION_QUEUE}`);
     return channel.consume(CREATE_AUCTION_QUEUE, (msg) => {
-        console.log(`Received ${msg.content.toString()}`);
+        const content = msg.content.toString();
+        console.log(`Received ${content}`);
+
+        const event = JSON.parse(content);
+        auctionRunner(event.auction.id);
     }, {noAck: true});
 }
 
