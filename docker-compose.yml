@@ -20,7 +20,7 @@ services:
     - ./rest-service/:/home/node/app
     ports:
     - 8080:3000
-    command: node index.js
+    command: bash -c "npm install && node index.js"
     restart: on-failure
 
   trader-ui:
@@ -32,7 +32,7 @@ services:
     - ./trader-ui/:/home/node/app
     ports:
     - 3000:3000
-    command: npm start
+    command: bash -c "npm install && npm start"
     restart: on-failure
 
   event-sourcing:
@@ -42,7 +42,7 @@ services:
     working_dir: /home/node/app
     volumes:
     - ./event-sourcing/:/home/node/app
-    command: node index.js
+    command: bash -c "npm install && node index.js"
     depends_on:
     - event-sourcing-db
     - message-bus
@@ -53,7 +53,7 @@ services:
     working_dir: /home/node/app
     volumes:
     - ./auction-runner/:/home/node/app
-    command: node index.js
+    command: bash -c "npm install && node index.js"
     depends_on:
     - event-sourcing-db
     - message-bus
