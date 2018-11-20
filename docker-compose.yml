@@ -11,6 +11,15 @@ services:
     hostname: event-sourcing-db
     container_name: event-sourcing-db
 
+  mongo-express:
+    image: mongo-express:latest
+    hostname: mongo-express
+    container_name: mongo-express
+    links:
+    - event-sourcing-db:mongo
+    ports:
+    - 8081:8081
+
   rest-service:
     image: node:latest
     hostname: rest-service

@@ -1,11 +1,10 @@
 const express = require('express');
 const amqp = require('amqplib');
 
+const persistEvent = require('./persistEvent');
+
 const EVENTS_EXCHANGE = "events";
 
-async function persistEvent() {
-
-}
 
 async function sendEventMessage(event) {
     const connection = await amqp.connect('amqp://message-bus');
@@ -23,8 +22,8 @@ async function handleEvent(req, res) {
     const event = req.body;
 
     try {
-        await persistEvent();
-        await sendEventMessage(event);
+        const persistedEvent = await persistEvent(event);
+        await sendEventMessage(persistedEvent);
         res.end();
     } catch (error) {
         res.status(500).send(`Something failed while handling event, ${error}`);

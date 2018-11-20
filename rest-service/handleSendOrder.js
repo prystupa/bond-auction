@@ -6,11 +6,11 @@ function handleSendOrder(req, res) {
     const id = uuid();
     const order = {
         ...req.body,
-        auctionId,
         id
     };
 
     const event = {
+        auction: {id: auctionId},
         order,
         key: `auction.${auctionId}.order.${id}.send`
     };
