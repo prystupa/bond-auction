@@ -1,7 +1,7 @@
 const express = require('express');
 const amqp = require('amqplib');
 
-const persistEvent = require('./persistEvent');
+const {saveEvent, searchEvents} = require('./eventsPersistence');
 
 const EVENTS_EXCHANGE = "events";
 
@@ -18,11 +18,11 @@ async function sendEventMessage(event) {
     return channel.waitForConfirms().then(() => connection.close());
 }
 
-async function handleEvent(req, res) {
+async function handleSaveEvent(req, res) {
     const event = req.body;
 
     try {
-        const persistedEvent = await persistEvent(event);
+        const persistedEvent = await saveEvent(event);
         await sendEventMessage(persistedEvent);
         res.end();
     } catch (error) {
@@ -30,13 +30,17 @@ async function handleEvent(req, res) {
     }
 }
 
+async function handleSearchEvents(req, res) {
+    const query = req.body;
+    const events = await searchEvents(query);
+    res.send(events);
+}
+
 const app = express();
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Hello from bond-auction event-sourcing REST services!');
-});
-
-app.post('/api/event', handleEvent);
+app.get('/', (req, res) => res.send('Hello from bond-auction event-sourcing REST services!'));
+app.post('/api/events', handleSaveEvent);
+app.get('/api/events/_search', handleSearchEvents);
 
 app.listen(3000, () => console.log('Listening on port 3000'));

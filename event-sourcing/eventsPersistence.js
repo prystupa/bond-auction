@@ -20,7 +20,7 @@ const initialized = mongoose.connect('mongodb://event-sourcing-db/events')
         return Event.estimatedDocumentCount().exec().then(count => seq = count);
     });
 
-async function persistEvent(event) {
+async function saveEvent(event) {
     await initialized;
     const persistedEvent = {
         ...event,
@@ -31,5 +31,12 @@ async function persistEvent(event) {
     return persistedEvent;
 }
 
+function searchEvents(query) {
+    return Event.find(query).exec();
+}
 
-module.exports = persistEvent;
+
+module.exports = {
+    saveEvent,
+    searchEvents
+};

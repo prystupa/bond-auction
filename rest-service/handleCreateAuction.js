@@ -14,7 +14,7 @@ function handleCreateAuction(req, res) {
     };
 
     request({
-        url: 'http://event-sourcing:3000/api/event',
+        url: 'http://event-sourcing:3000/api/events',
         method: 'POST',
         json: event
     }, (error, response, body) => {
