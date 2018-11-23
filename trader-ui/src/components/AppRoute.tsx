@@ -4,17 +4,14 @@ import {
     Drawer,
     IconButton,
     List,
-    ListItem,
-    ListItemText,
     Theme,
     Toolbar,
     Typography,
     withStyles
 } from "@material-ui/core";
 import {Menu as MenuIcon} from "@material-ui/icons";
-import {LocationDescriptor} from "history";
 import * as React from "react";
-import {NavLink} from "react-router-dom";
+import AppLink from "./AppLink";
 
 const styles = ({mixins, spacing}: Theme) => ({
     brand: {
@@ -26,9 +23,6 @@ const styles = ({mixins, spacing}: Theme) => ({
         ...mixins.gutters(),
         paddingBottom: spacing.unit * 2,
         paddingTop: spacing.unit * 2
-    },
-    navLink: {
-        textDecoration: 'none'
     }
 });
 
@@ -36,8 +30,7 @@ const styles = ({mixins, spacing}: Theme) => ({
 interface IProps {
     classes: {
         brand: string,
-        main: string,
-        navLink: string
+        main: string
     },
     title: string,
     component: React.ComponentType<any>
@@ -47,6 +40,7 @@ interface IState {
     open: boolean
 }
 
+
 class AppRoute extends React.Component<IProps, IState> {
     public state = {
         open: false
@@ -54,16 +48,6 @@ class AppRoute extends React.Component<IProps, IState> {
 
     public render() {
         const {classes, title, component: Component} = this.props;
-
-        const AppLink = ({to, text}: { to: LocationDescriptor, text: string }) => (
-            <NavLink className={classes.navLink}
-                     to={to}
-                     onClick={this.handleDrawerClose}>
-                <ListItem button={true}>
-                    <ListItemText>{text}</ListItemText>
-                </ListItem>
-            </NavLink>
-        );
 
         return (
             <React.Fragment>
@@ -85,7 +69,7 @@ class AppRoute extends React.Component<IProps, IState> {
                         <Typography variant="caption">Auction POC</Typography>
                     </div>
                     <Divider/>
-                    <List>
+                    <List component="nav">
                         <AppLink to="/" text="Blotter"/>
                         <AppLink to="/auction" text="Auction"/>
                     </List>
