@@ -2,9 +2,13 @@ version: "3.7"
 
 services:
   message-bus:
-    image: rabbitmq:latest
+    image: rabbitmq:3.7.8-management
     hostname: message-bus
     container_name: message-bus
+    ports:
+      - 8082:15672
+    volumes:
+      - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
 
   event-sourcing-db:
     image: mongo:latest
