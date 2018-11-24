@@ -1,26 +1,37 @@
-import {ListItem, ListItemText} from "@material-ui/core";
-import {LocationDescriptor} from "history";
+import {ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import * as React from "react";
-import {NavLink} from "react-router-dom";
+import {Link, Route} from "react-router-dom";
 
 interface IAppLink {
-    to: LocationDescriptor,
-    text: string
+    to: string,
+    exact?: boolean,
+    primary: string,
+    secondary?: string,
+    icon?: any
 }
 
 class AppLink extends React.Component<IAppLink> {
 
     public render() {
-        const {text} = this.props;
+        const {to, exact} = this.props;
 
         return (
-            <ListItem button={true} component={this.renderLink}>
-                <ListItemText primary={text}/>
-            </ListItem>
+            <Route path={to} exact={exact} children={this.renderListItem}/>
         );
     }
 
-    private renderLink = (itemProps: {}) => <NavLink to={this.props.to} {...itemProps}/>;
+    private renderListItem = ({match}: any) => {
+        const {primary, secondary, icon} = this.props;
+
+        return (
+            <ListItem button={true} component={this.renderLink} selected={!!match}>
+                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemText primary={primary} secondary={secondary}/>
+            </ListItem>
+        );
+    };
+
+    private renderLink = (itemProps: {}) => <Link to={this.props.to} {...itemProps}/>;
 }
 
 export default AppLink;

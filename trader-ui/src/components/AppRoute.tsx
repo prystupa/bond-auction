@@ -9,7 +9,11 @@ import {
     Typography,
     withStyles
 } from "@material-ui/core";
-import {Menu as MenuIcon} from "@material-ui/icons";
+import {
+    DashboardOutlined as DashboardIcon,
+    Menu as MenuIcon,
+    WatchLaterOutlined as AuctionIcon
+} from "@material-ui/icons";
 import * as React from "react";
 import AppLink from "./AppLink";
 
@@ -70,8 +74,8 @@ class AppRoute extends React.Component<IProps, IState> {
                     </div>
                     <Divider/>
                     <List component="nav">
-                        <AppLink to="/" text="Blotter"/>
-                        <AppLink to="/auction" text="Auction"/>
+                        <AppLink to="/" exact={true} primary="Dashboard" icon={<DashboardIcon/>}/>
+                        <AppLink to="/auction" primary="Auction" icon={<AuctionIcon/>}/>
                     </List>
                 </Drawer>
 

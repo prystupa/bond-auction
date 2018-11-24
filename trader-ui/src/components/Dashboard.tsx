@@ -1,8 +1,8 @@
 import {Typography} from "@material-ui/core";
 import * as React from "react";
 
-function Blotter() {
+function Dashboard() {
     return <Typography variant="body1">TODO - Blotter</Typography>;
 }
 
-export default Blotter;
+export default Dashboard;
