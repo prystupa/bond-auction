@@ -57,7 +57,7 @@ class AppRoute extends React.Component<IProps, IState> {
             <React.Fragment>
                 <AppBar position="static">
                     <Toolbar variant="dense">
-                        <IconButton onClick={this.handleDrawerOpen}>
+                        <IconButton onClick={this.handleDrawerOpen} color={"inherit"}>
                             <MenuIcon/>
                         </IconButton>
                         <Typography variant="h6" color="inherit">
