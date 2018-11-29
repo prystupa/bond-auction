@@ -1,14 +1,14 @@
 import {combineReducers} from "redux";
 import {combineEpics} from "redux-observable";
 
-import blotter from "./blotter";
+import blotter, {blotterEpic} from "./blotter";
 
 
 const rootReducer = combineReducers({
     blotter
 });
 
-const rootEpic = combineEpics();
+const rootEpic = combineEpics(blotterEpic);
 
 export {
     rootReducer,
