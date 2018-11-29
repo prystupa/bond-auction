@@ -1,16 +1,21 @@
 import {Typography} from "@material-ui/core";
 import * as React from "react";
 import {connect} from "react-redux";
-import {subscribeBlotter} from "../redux/modules/blotter";
+import {subscribeBlotter, unsubscribeBlotter} from "../redux/modules/blotter";
 
 interface IDashboard {
-    subscribeBlotter: () => void
+    subscribeBlotter: () => void,
+    unsubscribeBlotter: () => void
 }
 
 class Dashboard extends React.PureComponent<IDashboard> {
 
     public componentDidMount() {
         this.props.subscribeBlotter();
+    }
+
+    public componentWillUnmount() {
+        this.props.unsubscribeBlotter();
     }
 
     public render() {
@@ -20,5 +25,5 @@ class Dashboard extends React.PureComponent<IDashboard> {
 
 export default connect(
     null,
-    {subscribeBlotter}
+    {subscribeBlotter, unsubscribeBlotter}
 )(Dashboard);
