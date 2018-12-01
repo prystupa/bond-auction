@@ -27,6 +27,9 @@ const styles = ({mixins, spacing}: Theme) => ({
         ...mixins.gutters(),
         paddingBottom: spacing.unit * 2,
         paddingTop: spacing.unit * 2
+    },
+    status: {
+        marginLeft: 'auto'
     }
 });
 
@@ -34,9 +37,11 @@ const styles = ({mixins, spacing}: Theme) => ({
 interface IProps {
     classes: {
         brand: string,
-        main: string
+        main: string,
+        status: string
     },
     title: string,
+    statusComponent?: React.ComponentType<any>,
     component: React.ComponentType<any>
 }
 
@@ -51,7 +56,7 @@ class AppRoute extends React.Component<IProps, IState> {
     };
 
     public render() {
-        const {classes, title, component: Component} = this.props;
+        const {classes, title, statusComponent: Status, component: Component} = this.props;
 
         return (
             <React.Fragment>
@@ -63,6 +68,7 @@ class AppRoute extends React.Component<IProps, IState> {
                         <Typography variant="h6" color="inherit">
                             {title}
                         </Typography>
+                        {!!Status && <div className={classes.status}><Status/></div>}
                     </Toolbar>
                 </AppBar>
                 <Drawer variant="temporary"

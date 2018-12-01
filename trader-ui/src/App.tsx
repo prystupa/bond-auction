@@ -3,7 +3,7 @@ import * as React from "react";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 
 import AuctionRoute from "./components/AuctionRoute";
-import DashboardRoute from "./components/DashboardRoute";
+import DashboardRoute from "./dasboard/components/DashboardRoute";
 
 
 class App extends React.Component {

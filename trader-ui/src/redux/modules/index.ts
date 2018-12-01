@@ -1,8 +1,11 @@
 import {combineReducers} from "redux";
 import {combineEpics} from "redux-observable";
 
-import blotter, {blotterEpic} from "./blotter";
+import blotter, {blotterEpic, IBlotterState} from "./blotter";
 
+interface IRootState {
+    blotter: IBlotterState
+}
 
 const rootReducer = combineReducers({
     blotter
@@ -11,6 +14,7 @@ const rootReducer = combineReducers({
 const rootEpic = combineEpics(blotterEpic);
 
 export {
+    IRootState,
     rootReducer,
     rootEpic
 };
