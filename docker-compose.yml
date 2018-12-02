@@ -43,7 +43,7 @@ services:
     container_name: trader-ui
     working_dir: /home/node/app
     volumes:
-    - ./trader-ui/:/home/node/app
+    - ./trader-ui-ts/:/home/node/app
     ports:
     - 3000:3000
     command: bash -c "npm install && npm start"
