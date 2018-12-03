@@ -22,8 +22,9 @@ function BlotterConnectivityStatus({connectionState}) {
                 <span title="Connecting to blotter service...">
                     <PermScanWifi fontSize={"small"} style={{display: "flex"}}/>
                 </span>);
+        default:
+            return <span>{`Unknown state ${connectionState}`}</span>;
     }
-    return <span>TODO?</span>;
 }
 
 const mapStateToProps = ({blotter: {connectionState}}) => ({
