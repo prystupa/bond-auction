@@ -8,7 +8,7 @@ import Dashboard from "./Dashboard";
 class DashboardRoute extends React.Component {
 
     render() {
-        return <AppRoute title="Blotter"
+        return <AppRoute title="Home"
                          statusComponent={BlotterConnectivityStatus}
                          component={Dashboard}/>;
     }

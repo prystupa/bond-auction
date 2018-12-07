@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^3.6.1",
     "@material-ui/icons": "^3.0.1",
+    "@okta/okta-react": "^1.1.4",
     "@stomp/rx-stomp": "^0.1.1",
     "@stomp/stompjs": "^5.0.2",
     "react": "^16.6.3",
