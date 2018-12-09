@@ -1,6 +1,6 @@
 import {RxStomp} from "@stomp/rx-stomp";
 import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 
 const CONNECTED = 'blotter-service://connected';
 const CONNECTION_STATE = 'blotter-service://connection-state';
@@ -15,7 +15,7 @@ function subscribe() {
 
         const rxStomp = new RxStomp();
         rxStomp.configure({
-            brokerURL: "ws://localhost:15674/ws",
+            brokerURL: "wss://localhost:8444/ws",
             connectHeaders: {
                 login: 'guest',
                 passcode: 'guest'
@@ -25,10 +25,16 @@ function subscribe() {
             .pipe(map(message => (blotterConnected(message))))
             .subscribe(observer);
         const connectionStateSubscription = rxStomp.connectionState$
-            .pipe(map(message => (blotterConnectionState(message))))
+            .pipe(
+                tap(state => console.log('connection state', state)),
+                map(message => (blotterConnectionState(message)))
+            )
             .subscribe(observer);
         const errorsSubscription = rxStomp.stompErrors$
-            .pipe(map(message => blotterError(message)))
+            .pipe(
+                tap(error => console.log('stomp errors', error)),
+                map(message => blotterError(message))
+            )
             .subscribe(observer);
         const blotterSubscription = rxStomp.watch("blotter")
             .pipe(map(message => blotterEvent(message)))

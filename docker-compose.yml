@@ -3,7 +3,9 @@ version: "3.7"
 # exposed ports
 # 8000 - web services
 # 8080/8443 - trader-ui app via reverse nginx proxy
+# 8444 - trader-ui websocket app via reverse nginx proxy
 # 8081 - mongo express Web UI
+# 8082 - RabbitMQ web UI
 
 services:
   message-bus:
@@ -12,7 +14,6 @@ services:
     container_name: message-bus
     ports:
     - 8082:15672
-    - 15674:15674
     volumes:
     - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
 
@@ -41,6 +42,7 @@ services:
     ports:
     - 8080:8080
     - 8443:8443
+    - 8444:8444
 
   rest-service:
     image: node:latest
