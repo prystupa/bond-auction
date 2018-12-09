@@ -9,7 +9,7 @@ import DashboardRoute from "./dasboard/components/DashboardRoute";
 const config = {
     issuer: 'https://dev-123714.oktapreview.com/oauth2/default',
     redirect_uri: window.location.origin + '/implicit/callback',
-    client_id: '0oai4edw7aDX4gOeI0h7'
+    client_id: '0oai5i7arqk9bibxv0h7'
 };
 
 class App extends Component {

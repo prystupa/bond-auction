@@ -1,0 +1,32 @@
+events {
+    worker_connections 1024;
+}
+
+http {
+    server {
+        listen 8080;
+
+        location / {
+            return 301 https:$host:8443$request_uri;
+        }
+    }
+
+    server {
+        listen 8443 ssl;
+
+        ssl_certificate /etc/ssl/insecure.pem;
+        ssl_certificate_key /etc/ssl/insecure.key;
+        ssl_dhparam /etc/ssl/dhparam-insecure.pem;
+
+        location / {
+            proxy_pass http://trader-ui:3000;
+        }
+
+        location /sockjs-node/ {
+            proxy_pass http://trader-ui:3000;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+    }
+}
