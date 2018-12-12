@@ -7,9 +7,9 @@ import AuctionRoute from "./auction/components/AuctionRoute";
 import DashboardRoute from "./dasboard/components/DashboardRoute";
 
 const config = {
-    issuer: 'https://dev-123714.oktapreview.com/oauth2/default',
+    issuer: `${process.env.REACT_APP_OKTA_ORG_URL}/oauth2/default`,
     redirect_uri: window.location.origin + '/implicit/callback',
-    client_id: '0oai5i7arqk9bibxv0h7'
+    client_id: `${process.env.REACT_APP_OKTA_CLIENT_ID}`
 };
 
 class App extends Component {
