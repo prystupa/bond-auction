@@ -10,3 +10,9 @@ export REACT_APP_OKTA_CLIENT_ID={clientId}
 export REACT_APP_OKTA_ORG_URL=https://{yourOktaDomain}
 docker-compose up -d
 ```
+Or, if working on/testing fail-over for various components,
+scale up with --scale, e.g.:
+
+```bash
+docker-compose up -d --scale auction-runner=2
+```
