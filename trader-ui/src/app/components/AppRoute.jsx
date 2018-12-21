@@ -10,8 +10,7 @@ import {
 } from "@material-ui/core";
 import {
     DashboardOutlined as DashboardIcon,
-    Menu as MenuIcon,
-    WatchLaterOutlined as AuctionIcon
+    Menu as MenuIcon
 } from "@material-ui/icons";
 import * as React from "react";
 import AppLink from "./AppLink";
@@ -64,7 +63,6 @@ class AppRoute extends React.Component {
                     <Divider/>
                     <List component="nav">
                         <AppLink to="/" exact={true} primary="Dashboard" icon={<DashboardIcon/>}/>
-                        <AppLink to="/auction" primary="Auction" icon={<AuctionIcon/>}/>
                     </List>
                 </Drawer>
 

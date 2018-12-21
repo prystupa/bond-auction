@@ -1,8 +1,10 @@
-import {Typography} from "@material-ui/core";
 import * as React from "react";
 import {connect} from "react-redux";
+import {Typography, Grid} from "@material-ui/core";
+
 import {subscribeBlotter, unsubscribeBlotter} from "../../redux/modules/blotter";
 import {withAuth} from "@okta/okta-react";
+import Auction from "../../auction/components/Auction";
 
 
 class Dashboard extends React.PureComponent {
@@ -22,7 +24,16 @@ class Dashboard extends React.PureComponent {
 
     render() {
         const {user: {name}} = this.state;
-        return <Typography variant="body1">Welcome, {name}</Typography>;
+        return (
+            <Grid container={true} spacing={16}>
+                <Grid item={true} xs={12}>
+                    <Typography variant="body1">Welcome, {name}</Typography>
+                </Grid>
+                <Grid item={true} xs={12}>
+                    <Auction/>
+                </Grid>
+            </Grid>
+        );
     }
 
     async _getUser() {
