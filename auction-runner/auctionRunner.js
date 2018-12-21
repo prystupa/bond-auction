@@ -11,8 +11,7 @@ async function auctionRunner(auctionId) {
 
     const connection = await amqp.connect('amqp://message-bus');
     const channel = await connection.createChannel();
-
-    await channel.assertExchange(BLOTTER_EXCHANGE, 'topic', {durable: false});
+    const publishChannel = await connection.createChannel();
 
     const queue = await channel.assertQueue('', {exclusive: true});
     channel.bindQueue(queue.queue, EVENTS_EXCHANGE, `auction.${auctionId}.#`);
@@ -29,7 +28,7 @@ async function auctionRunner(auctionId) {
             if (!quiet) {
                 const payload = JSON.stringify(state);
                 console.log(`Publishing ${payload} to exchange ${BLOTTER_EXCHANGE}`);
-                channel.publish(EVENTS_EXCHANGE, event.key, Buffer.from(payload));
+                publishChannel.publish(BLOTTER_EXCHANGE, event.key, Buffer.from(payload));
             }
             lastSeq = seq;
         }

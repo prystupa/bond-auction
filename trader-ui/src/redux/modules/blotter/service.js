@@ -4,6 +4,7 @@ import {map, tap} from "rxjs/operators";
 
 const CONNECTED = 'blotter-service://connected';
 const CONNECTION_STATE = 'blotter-service://connection-state';
+const BLOTTER_DESTINATION = '/exchange/blotter';
 
 const blotterConnected = (message) => ({type: CONNECTED, message});
 const blotterConnectionState = (message) => ({type: CONNECTION_STATE, message});
@@ -36,7 +37,7 @@ function subscribe() {
                 map(message => blotterError(message))
             )
             .subscribe(observer);
-        const blotterSubscription = rxStomp.watch("blotter")
+        const blotterSubscription = rxStomp.watch(BLOTTER_DESTINATION)
             .pipe(map(message => blotterEvent(message)))
             .subscribe(observer);
 

@@ -4,15 +4,21 @@ const amqp = require('amqplib');
 const auctionRunner = require('./auctionRunner');
 
 const EVENTS_EXCHANGE = "events";
+const BLOTTER_EXCHANGE = "blotter";
 const CREATE_AUCTION_QUEUE = "create-auction";
 
 async function provisionAuctions() {
     const connection = await amqp.connect('amqp://message-bus');
-    const channel = await connection.createChannel();
 
+    // input messaging infrastructure
+    const channel = await connection.createChannel();
     await channel.assertExchange(EVENTS_EXCHANGE, 'topic', {durable: true});
     await channel.assertQueue(CREATE_AUCTION_QUEUE, {durable: true});
     channel.bindQueue(CREATE_AUCTION_QUEUE, EVENTS_EXCHANGE, 'auction.*.create');
+
+    // output messaging infrastructure
+    const publishChannel = await connection.createChannel();
+    await publishChannel.assertExchange(BLOTTER_EXCHANGE, 'topic', {durable: false});
 
     console.log(`Waiting to receive message from queue ${CREATE_AUCTION_QUEUE}`);
     return channel.consume(CREATE_AUCTION_QUEUE, (msg) => {
