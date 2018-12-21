@@ -4,12 +4,15 @@ const amqp = require('amqplib');
 const auctionReducer = require('./auctionReducer');
 
 const EVENTS_EXCHANGE = "events";
+const BLOTTER_EXCHANGE = "blotter";
 
 async function auctionRunner(auctionId) {
     console.log(`Starting auction handler for ${auctionId}`);
 
     const connection = await amqp.connect('amqp://message-bus');
     const channel = await connection.createChannel();
+
+    await channel.assertExchange(BLOTTER_EXCHANGE, 'topic', {durable: false});
 
     const queue = await channel.assertQueue('', {exclusive: true});
     channel.bindQueue(queue.queue, EVENTS_EXCHANGE, `auction.${auctionId}.#`);
@@ -24,7 +27,9 @@ async function auctionRunner(auctionId) {
         if (seq > lastSeq) {
             state = auctionReducer(state, event);
             if (!quiet) {
-                console.log(`Auction runner ${auctionId}, state = `, state);
+                const payload = JSON.stringify(state);
+                console.log(`Publishing ${payload} to exchange ${BLOTTER_EXCHANGE}`);
+                channel.publish(EVENTS_EXCHANGE, event.key, Buffer.from(payload));
             }
             lastSeq = seq;
         }
