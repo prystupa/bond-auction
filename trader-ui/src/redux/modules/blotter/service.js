@@ -6,7 +6,7 @@ const CONNECTED = 'blotter-service://connected';
 const CONNECTION_STATE = 'blotter-service://connection-state';
 const BLOTTER_UPDATE = 'blotter-service://update';
 
-const BLOTTER_DESTINATION = '/exchange/blotter';
+const BLOTTER_DESTINATION = '/exchange/blotter/#';
 
 const blotterConnected = (message) => ({type: CONNECTED, message});
 const blotterConnectionState = (message) => ({type: CONNECTION_STATE, message});
@@ -40,7 +40,7 @@ function subscribe() {
             )
             .subscribe(observer);
         const blotterSubscription = rxStomp.watch(BLOTTER_DESTINATION)
-            .pipe(map(message => blotterUpdate(message)))
+            .pipe(map(message => blotterUpdate(message.body)))
             .subscribe(observer);
 
         rxStomp.activate();

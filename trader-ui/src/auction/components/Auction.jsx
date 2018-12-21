@@ -43,11 +43,11 @@ class Auction extends React.PureComponent {
                     <Typography variant="body1">You have no messages to display</Typography>
                 </Grid>
                 }
-                {messages.length > 0 &&
-                <Grid item={true} xs={12}>
-                    <Typography variant="body1">You have {messages.length} messages</Typography>
-                </Grid>
-                }
+                {messages.map((message, index) =>
+                    <Grid key={`message-${index}`} item={true} xs={12}>
+                        <Typography variant="body1">{JSON.stringify(message)}</Typography>
+                    </Grid>
+                )}
             </Grid>
         );
     }
