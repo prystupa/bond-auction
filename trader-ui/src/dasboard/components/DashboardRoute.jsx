@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import BlotterConnectivityStatus from "./BlotterConnectivityStatus";
+import BlotterConnectivityStatus from "../../blotter/components/BlotterConnectivityStatus";
 import AppRoute from "../../app/components/AppRoute";
 import Dashboard from "./Dashboard";
 
