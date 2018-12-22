@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CircularProgress, Typography, Button, Grid} from "@material-ui/core";
+import {CircularProgress, Button, Grid} from "@material-ui/core";
 import {Done, ErrorOutline as Error} from "@material-ui/icons";
 import {connect} from "react-redux";
 
@@ -35,7 +35,6 @@ class Auction extends React.PureComponent {
         const {
             auctionFetching, auction, auctionError,
             orderFetching, order, orderError,
-            messages,
             createAuction
         } = this.props;
 
@@ -54,20 +53,6 @@ class Auction extends React.PureComponent {
                              response={order}
                              action={this._placeBid}/>
                 }
-
-                <Grid item={true} xs={12}>
-                    <Typography variant={"h6"}>Blotter</Typography>
-                </Grid>
-                {messages.length === 0 &&
-                <Grid item={true} xs={12}>
-                    <Typography variant="body1">You have no messages to display</Typography>
-                </Grid>
-                }
-                {messages.map((message, index) =>
-                    <Grid key={`message-${index}`} item={true} xs={12}>
-                        <Typography variant="body1">{JSON.stringify(message)}</Typography>
-                    </Grid>
-                )}
             </Grid>
         );
     }
@@ -76,12 +61,10 @@ class Auction extends React.PureComponent {
 const stateMap = (
     {
         auction: {fetching: auctionFetching, auction, error: auctionError},
-        order: {fetching: orderFetching, order, error: orderError},
-        blotter: {messages}
+        order: {fetching: orderFetching, order, error: orderError}
     }) => ({
     auctionFetching, auction, auctionError,
-    orderFetching, order, orderError,
-    messages
+    orderFetching, order, orderError
 });
 
 export default connect(stateMap, {createAuction, placeBid})(Auction);

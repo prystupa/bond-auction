@@ -5,6 +5,7 @@ import {Typography, Grid} from "@material-ui/core";
 import {subscribeBlotter, unsubscribeBlotter} from "../../redux/modules/blotter";
 import {withAuth} from "@okta/okta-react";
 import Auction from "../../auction/components/Auction";
+import Blotter from "../../blotter/components/Blotter";
 
 
 class Dashboard extends React.PureComponent {
@@ -31,6 +32,12 @@ class Dashboard extends React.PureComponent {
                 </Grid>
                 <Grid item={true} xs={12}>
                     <Auction/>
+                </Grid>
+                <Grid item={true} xs={12}>
+                    <Typography variant={"h6"}>Blotter</Typography>
+                </Grid>
+                <Grid item={true} xs={12}>
+                    <Blotter/>
                 </Grid>
             </Grid>
         );
