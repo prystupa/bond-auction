@@ -40,7 +40,7 @@ function subscribe() {
             )
             .subscribe(observer);
         const blotterSubscription = rxStomp.watch(BLOTTER_DESTINATION)
-            .pipe(map(message => blotterUpdate(message.body)))
+            .pipe(map(message => blotterUpdate(JSON.parse(message.body))))
             .subscribe(observer);
 
         rxStomp.activate();

@@ -50,7 +50,7 @@ async function auctionRunner(auctionId) {
             });
 
             const events = await eventsRequest;
-            events.forEach(event => applyEvent(event, {quiet: true}));
+            events.forEach(event => applyEvent(event, {quiet: false}));
         });
 }
 

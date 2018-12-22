@@ -11,6 +11,7 @@ const unsubscribeBlotter = () => ({type: BLOTTER_UNSUBSCRIBE});
 
 const INITIAL_STATE = {
     connectionState: RxStompState.CLOSED,
+    lastSeq: -1,
     messages: []
 };
 
@@ -25,9 +26,15 @@ function blotter(state = INITIAL_STATE, action) {
             };
         case BLOTTER_UPDATE: {
             const {message} = action;
+            const {lastSeq} = message;
+
+            const duplicate = lastSeq <= state.lastSeq;
+            const update = duplicate ? {...message, _duplicate: true} : message;
+
             return {
                 ...state,
-                messages: [...state.messages, message]
+                lastSeq: duplicate ? state.lastSeq : lastSeq,
+                messages: [...state.messages, update]
             };
         }
         default:
