@@ -18,6 +18,9 @@ docker-compose up -d --scale auction-runner=2
 ```
 
 ### Backlog
+- Implement service to fetch a snapshot of the blotter, wire UI to call it
+to populate the blotter with snapshot (currently blotter onbly populated
+via real-time updates)
 - Replace RabbitMQ STOMP bridge with Vert.x based STOMP push-service, 
 have client authenticate itself sending accessToken in Connect frame,
 use JWT verifier to authenticate/authorize blotter subscription 
