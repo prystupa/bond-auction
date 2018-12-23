@@ -13,9 +13,9 @@ services:
     hostname: message-bus
     container_name: message-bus
     ports:
-    - 8082:15672
+      - 8082:15672
     volumes:
-    - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
+      - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
 
   event-sourcing-db:
     image: mongo:latest
@@ -27,22 +27,22 @@ services:
     hostname: mongo-express
     container_name: mongo-express
     links:
-    - event-sourcing-db:mongo
+      - event-sourcing-db:mongo
     ports:
-    - 8081:8081
+      - 8081:8081
 
   web:
     image: nginx
     container_name: web
     volumes:
-    - ./web/config.nginx:/etc/nginx/nginx.conf
-    - ./config/insecure.pem:/etc/ssl/insecure.pem
-    - ./config/insecure.key:/etc/ssl/insecure.key
-    - ./config/dhparam-insecure.pem:/etc/ssl/dhparam-insecure.pem
+      - ./web/config.nginx:/etc/nginx/nginx.conf
+      - ./config/insecure.pem:/etc/ssl/insecure.pem
+      - ./config/insecure.key:/etc/ssl/insecure.key
+      - ./config/dhparam-insecure.pem:/etc/ssl/dhparam-insecure.pem
     ports:
-    - 8080:8080
-    - 8443:8443
-    - 8444:8444
+      - 8080:8080
+      - 8443:8443
+      - 8444:8444
 
   rest-service:
     image: node:latest
@@ -50,9 +50,12 @@ services:
     container_name: rest-service
     working_dir: /home/node/app
     volumes:
-    - ./rest-service/:/home/node/app
+      - ./rest-service/:/home/node/app
     ports:
-    - 8000:3000
+      - 8000:3000
+    environment:
+      - APP_OKTA_CLIENT_ID
+      - APP_OKTA_ORG_URL
     command: bash -c "npm install && node index.js"
     restart: on-failure
 
@@ -62,7 +65,7 @@ services:
     container_name: trader-ui
     working_dir: /home/node/app
     volumes:
-    - ./trader-ui/:/home/node/app
+      - ./trader-ui/:/home/node/app
     environment:
       - REACT_APP_OKTA_CLIENT_ID=${APP_OKTA_CLIENT_ID}
       - REACT_APP_OKTA_ORG_URL=${APP_OKTA_ORG_URL}
@@ -75,20 +78,20 @@ services:
     container_name: event-sourcing
     working_dir: /home/node/app
     volumes:
-    - ./event-sourcing/:/home/node/app
+      - ./event-sourcing/:/home/node/app
     command: bash -c "npm install && node index.js"
     depends_on:
-    - event-sourcing-db
-    - message-bus
+      - event-sourcing-db
+      - message-bus
     restart: on-failure
 
   auction-runner:
     image: node:latest
     working_dir: /home/node/app
     volumes:
-    - ./auction-runner/:/home/node/app
+      - ./auction-runner/:/home/node/app
     command: bash -c "npm install && node index.js"
     depends_on:
-    - event-sourcing-db
-    - message-bus
+      - event-sourcing-db
+      - message-bus
     restart: on-failure
