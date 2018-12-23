@@ -23,7 +23,7 @@ have client authenticate itself sending accessToken in Connect frame,
 use JWT verifier to authenticate/authorize blotter subscription 
 (follow rest-service pattern)
 - Add a simple field to auction called "openTo", which is a list of 
-users allowed to participate. You this field to demonstrate attribute-based
+users allowed to participate. Use this field to demonstrate attribute-based
 entitlements (i.e. auction is only broadcast to blotters of allowed
 participants)
 - Create a test script for demo that includes at least three
