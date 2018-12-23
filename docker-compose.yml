@@ -64,8 +64,8 @@ services:
     volumes:
     - ./trader-ui/:/home/node/app
     environment:
-      - REACT_APP_OKTA_CLIENT_ID
-      - REACT_APP_OKTA_ORG_URL
+      - REACT_APP_OKTA_CLIENT_ID=${APP_OKTA_CLIENT_ID}
+      - REACT_APP_OKTA_ORG_URL=${APP_OKTA_ORG_URL}
     command: bash -c "npm install && npm start"
     restart: on-failure
 
