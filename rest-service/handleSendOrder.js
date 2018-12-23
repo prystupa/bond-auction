@@ -6,7 +6,8 @@ function handleSendOrder(req, res) {
     const id = uuid();
     const order = {
         ...req.body,
-        id
+        id,
+        placedBy: req.jwt.claims.sub
     };
 
     const event = {

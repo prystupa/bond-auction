@@ -5,7 +5,8 @@ function handleCreateAuction(req, res) {
     const id = uuid();
     const auction = {
         ...req.body,
-        id
+        id,
+        createdBy: req.jwt.claims.sub
     };
 
     const event = {
