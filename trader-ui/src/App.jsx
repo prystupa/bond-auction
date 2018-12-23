@@ -3,8 +3,8 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 import {CssBaseline} from "@material-ui/core";
 import {Security, SecureRoute, ImplicitCallback} from "@okta/okta-react";
 
-import AuctionRoute from "./auction/components/AuctionRoute";
 import DashboardRoute from "./dasboard/components/DashboardRoute";
+import {captureAuth} from "./app/auth";
 
 const config = {
     issuer: `${process.env.REACT_APP_OKTA_ORG_URL}/oauth2/default`,
@@ -18,8 +18,7 @@ class App extends Component {
             <Router>
                 <Security {...config}>
                     <CssBaseline/>
-                    <SecureRoute exact={true} path="/" component={DashboardRoute}/>
-                    <SecureRoute path="/auction" component={AuctionRoute}/>
+                    <SecureRoute exact={true} path="/" component={captureAuth(DashboardRoute)}/>
                     <Route path='/implicit/callback' component={ImplicitCallback}/>
                 </Security>
             </Router>

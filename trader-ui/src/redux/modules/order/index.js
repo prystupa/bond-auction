@@ -46,15 +46,19 @@ function order(state = INITIAL_STATE, action) {
 }
 
 
-function placeBidEpic(action$) {
+function placeBidEpic(action$, state$) {
     return action$.pipe(
         ofType(PLACE_BID),
         flatMap(async ({auctionId}) => {
                 try {
+                    const {auth: {accessToken}} = state$.value;
                     const response = await fetch(
                         `/api/auctions/${auctionId}/orders`,
                         {
-                            method: 'POST'
+                            method: 'POST',
+                            headers: {
+                                Authorization: `Bearer ${accessToken}`
+                            }
                         });
 
                     const order = await response.json();

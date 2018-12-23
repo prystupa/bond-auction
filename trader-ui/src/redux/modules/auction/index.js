@@ -45,15 +45,19 @@ function auction(state = INITIAL_STATE, action) {
     }
 }
 
-function createAuctionEpic(action$) {
+function createAuctionEpic(action$, state$) {
     return action$.pipe(
         ofType(AUCTION_CREATE),
         flatMap(async () => {
                 try {
+                    const {auth: {accessToken}} = state$.value;
                     const response = await fetch(
                         '/api/auctions',
                         {
-                            method: 'POST'
+                            method: 'POST',
+                            headers: {
+                                Authorization: `Bearer ${accessToken}`
+                            }
                         });
 
                     const auction = await response.json();
