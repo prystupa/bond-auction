@@ -59,6 +59,16 @@ services:
     command: bash -c "npm install && node index.js"
     restart: on-failure
 
+  push-service:
+    image: maven
+    working_dir: /home/app
+    volumes:
+      - ./push-service/:/home/app
+      - ./push-service/.m2/:/root/.m2
+    command: mvn clean install
+    restart: on-failure
+
+
   trader-ui:
     image: node:latest
     hostname: trader-ui
