@@ -6,6 +6,7 @@ version: "3.7"
 # 8444 - trader-ui websocket app via reverse nginx proxy
 # 8081 - mongo express Web UI
 # 8082 - RabbitMQ web UI
+# 8083 - temporarily testing Vert.x
 
 services:
   message-bus:
@@ -65,7 +66,9 @@ services:
     volumes:
       - ./push-service/:/home/app
       - ./push-service/.m2/:/root/.m2
-    command: mvn clean install
+    ports:
+      - 8083:8080
+    command: mvn clean install vertx:run
     restart: on-failure
 
 
