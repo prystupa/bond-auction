@@ -62,6 +62,8 @@ services:
 
   push-service:
     image: maven
+    hostname: push-service
+    container_name: push-service
     working_dir: /home/app
     volumes:
       - ./push-service/:/home/app

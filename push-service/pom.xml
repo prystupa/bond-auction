@@ -23,11 +23,19 @@
     </properties>
 
     <dependencies>
+        <!-- Vert.x -->
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-core</artifactId>
             <version>${vertx.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-stomp</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+
+        <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
