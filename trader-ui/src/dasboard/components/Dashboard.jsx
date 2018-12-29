@@ -44,8 +44,12 @@ class Dashboard extends React.PureComponent {
     }
 
     async _getUser() {
-        const user = await this.props.auth.getUser();
-        this.setState({user});
+        try {
+            const user = await this.props.auth.getUser();
+            this.setState({user});
+        } catch (e) {
+            this.setState({user: {name: '[Unknown]'}})
+        }
     }
 }
 
