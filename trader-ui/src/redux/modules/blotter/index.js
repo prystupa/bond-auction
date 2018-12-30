@@ -43,11 +43,12 @@ function blotter(state = INITIAL_STATE, action) {
 }
 
 
-function subscribeEpic(action$) {
+function subscribeEpic(action$, state$) {
     return action$.pipe(
         ofType(BLOTTER_SUBSCRIBE),
         flatMap(() => {
-            return subscribe().pipe(
+            const {auth: {accessToken}} = state$.value;
+            return subscribe(accessToken).pipe(
                 takeUntil(action$.pipe(ofType(BLOTTER_UNSUBSCRIBE)))
             );
         })

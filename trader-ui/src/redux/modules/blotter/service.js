@@ -13,7 +13,7 @@ const blotterConnectionState = (message) => ({type: CONNECTION_STATE, message});
 const blotterError = (message) => ({type: 'blotter-service://error', message});
 const blotterUpdate = (message) => ({type: BLOTTER_UPDATE, message});
 
-function subscribe() {
+function subscribe(accessToken) {
     return Observable.create((observer) => {
 
         const rxStomp = new RxStomp();
@@ -21,7 +21,8 @@ function subscribe() {
             brokerURL: "wss://localhost:8444/ws",
             connectHeaders: {
                 login: 'guest',
-                passcode: 'guest'
+                passcode: 'guest',
+                Authorization: `Bearer ${accessToken}`
             }
         });
         const connectedSubscription = rxStomp.connected$
