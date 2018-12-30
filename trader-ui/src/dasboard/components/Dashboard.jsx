@@ -14,9 +14,9 @@ class Dashboard extends React.PureComponent {
         user: {}
     };
 
-    componentDidMount() {
+    async componentDidMount() {
+        await this._getUser();
         this.props.subscribeBlotter();
-        this._getUser();
     }
 
     componentWillUnmount() {
