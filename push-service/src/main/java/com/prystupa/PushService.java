@@ -14,10 +14,12 @@ public class PushService extends AbstractVerticle {
 
         StompServerOptions stompServerOptions = new StompServerOptions()
                 .setPort(-1)
+                .setSecured(true)
                 .setWebsocketBridge(true)
                 .setWebsocketPath("/ws");
         StompServer stompServer = StompServer.create(vertx, stompServerOptions)
-                .handler(StompServerHandler.create(vertx));
+                .handler(StompServerHandler.create(vertx)
+                        .authProvider(new OktaAuthProvider()));
 
         HttpServerOptions httpServerOptions = new HttpServerOptions()
                 .setWebsocketSubProtocols("v10.stomp, v11.stomp, v12.stomp");

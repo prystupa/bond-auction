@@ -35,6 +35,13 @@
             <version>${vertx.version}</version>
         </dependency>
 
+        <!-- Okta -->
+        <dependency>
+            <groupId>com.okta.jwt</groupId>
+            <artifactId>okta-jwt-verifier</artifactId>
+            <version>0.3.2</version>
+        </dependency>
+
         <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>
