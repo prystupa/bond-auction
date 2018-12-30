@@ -10,9 +10,9 @@ import io.vertx.ext.auth.User;
 
 public class OktaAuthProvider implements AuthProvider {
     @Override
-    public void authenticate(JsonObject jsonObject, Handler<AsyncResult<User>> handler) {
+    public void authenticate(JsonObject authInfo, Handler<AsyncResult<User>> resultHandler) {
 
-        handler.handle(Future.succeededFuture(new AbstractUser() {
+        resultHandler.handle(Future.succeededFuture(new AbstractUser() {
             @Override
             protected void doIsPermitted(String permission, Handler<AsyncResult<Boolean>> resultHandler) {
                 resultHandler.handle(Future.succeededFuture(true));
@@ -20,7 +20,8 @@ public class OktaAuthProvider implements AuthProvider {
 
             @Override
             public JsonObject principal() {
-                return null;
+                String user = authInfo.getString("username");
+                return new JsonObject().put("user", user);
             }
 
             @Override

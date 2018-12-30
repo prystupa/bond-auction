@@ -8,9 +8,11 @@ import io.vertx.ext.stomp.StompServer;
 import io.vertx.ext.stomp.StompServerHandler;
 import io.vertx.ext.stomp.StompServerOptions;
 
+import java.io.IOException;
+
 public class PushService extends AbstractVerticle {
     @Override
-    public void start(Future<Void> startFuture) {
+    public void start(Future<Void> startFuture) throws IOException {
 
         StompServerOptions stompServerOptions = new StompServerOptions()
                 .setPort(-1)
@@ -19,7 +21,8 @@ public class PushService extends AbstractVerticle {
                 .setWebsocketPath("/ws");
         StompServer stompServer = StompServer.create(vertx, stompServerOptions)
                 .handler(StompServerHandler.create(vertx)
-                        .authProvider(new OktaAuthProvider()));
+                        .authProvider(new OktaAuthProvider())
+                        .connectHandler(new OktaConnectHandler()));
 
         HttpServerOptions httpServerOptions = new HttpServerOptions()
                 .setWebsocketSubProtocols("v10.stomp, v11.stomp, v12.stomp");
