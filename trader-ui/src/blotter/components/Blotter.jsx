@@ -1,13 +1,13 @@
 import * as React from "react";
 import {
     Button,
-    Grid,
+    Paper,
     Table,
     TableHead,
     TableBody,
     TableRow,
     TableCell,
-    Typography
+    TableFooter
 } from "@material-ui/core";
 import {connect} from "react-redux";
 import {placeBid} from "../../redux/modules/order";
@@ -29,12 +29,7 @@ class Blotter extends React.PureComponent {
         const {messages} = this.props;
 
         return (
-            <Grid container={true}>
-                {messages.length === 0 &&
-                <Grid item={true} xs={12}>
-                    <Typography variant="body1">You have no auction to display</Typography>
-                </Grid>
-                }
+            <Paper>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -51,14 +46,21 @@ class Blotter extends React.PureComponent {
                                 <TableCell>{message.createdBy}</TableCell>
                                 <TableCell>{message.events.join(', ')}</TableCell>
                                 <TableCell>
-                                    <Button size="small" color="primary" onClick={this._placeBidHandler(message.id)}>Place
+                                    <Button size="small" color="primary"
+                                            onClick={this._placeBidHandler(message.id)}>Place
                                         Bid</Button>
                                 </TableCell>
                             </TableRow>
                         )}
                     </TableBody>
+                    {messages.length === 0 &&
+                    <TableFooter>
+                        <TableRow>
+                            <TableCell colSpan={4}>You have no auctions to display</TableCell>
+                        </TableRow>
+                    </TableFooter>}
                 </Table>
-            </Grid>
+            </Paper>
         );
     }
 }

@@ -17,9 +17,6 @@ function TradeAction({title, fetching, response, error, action}) {
                 {!fetching && response && <Grid item={true}><Done color="primary"/></Grid>}
                 {error && <Grid item={true}><Error color="error"/></Grid>}
             </Grid>
-            {response &&
-            <Grid item={true} xs={12}>{JSON.stringify(response)}</Grid>
-            }
         </>
     );
 }
