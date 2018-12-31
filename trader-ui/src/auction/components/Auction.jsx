@@ -15,7 +15,7 @@ function TradeAction({title, fetching, response, error, action}) {
                 </Grid>
                 {fetching &&
                 <Grid item={true}><CircularProgress size={20}/></Grid>}
-                {response && <Grid item={true}><Done color="primary"/></Grid>}
+                {!fetching && response && <Grid item={true}><Done color="primary"/></Grid>}
                 {error && <Grid item={true}><Error color="error"/></Grid>}
             </Grid>
             {response &&

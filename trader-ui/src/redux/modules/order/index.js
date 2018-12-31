@@ -21,7 +21,6 @@ function order(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 fetching: true,
-                order: null,
                 error: null
             };
         case BID_PLACED: {
@@ -37,6 +36,7 @@ function order(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 fetching: false,
+                order: null,
                 error
             }
         }

@@ -5,6 +5,7 @@ function auctionReducer(state = {events: []}, event) {
 
     return {
         ...state,
+        ...event.auction,
         lastSeq: seq,
         events: [...events, seq]
     };

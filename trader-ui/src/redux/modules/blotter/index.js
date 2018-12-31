@@ -29,12 +29,14 @@ function blotter(state = INITIAL_STATE, action) {
             const {lastSeq} = message;
 
             const duplicate = lastSeq <= state.lastSeq;
-            const update = duplicate ? {...message, _duplicate: true} : message;
+            if (duplicate) {
+                return state;
+            }
 
             return {
                 ...state,
-                lastSeq: duplicate ? state.lastSeq : lastSeq,
-                messages: [...state.messages, update]
+                lastSeq,
+                messages: [message, ...state.messages.filter(({id}) => id !== message.id)]
             };
         }
         default:
