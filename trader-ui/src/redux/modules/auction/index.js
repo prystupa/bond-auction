@@ -21,7 +21,6 @@ function auction(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 fetching: true,
-                auction: null,
                 error: null
             };
         case AUCTION_CREATED: {
@@ -37,6 +36,7 @@ function auction(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 fetching: false,
+                auction: null,
                 error
             }
         }

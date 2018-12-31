@@ -4,7 +4,6 @@ import {Done, ErrorOutline as Error} from "@material-ui/icons";
 import {connect} from "react-redux";
 
 import {createAuction} from "../../redux/modules/auction";
-import {placeBid} from "../../redux/modules/order";
 
 function TradeAction({title, fetching, response, error, action}) {
     return (
@@ -26,15 +25,12 @@ function TradeAction({title, fetching, response, error, action}) {
 }
 
 class Auction extends React.PureComponent {
-    _placeBid = () => {
-        const {placeBid, auction: {id}} = this.props;
-        placeBid(id);
-    };
 
     render() {
         const {
-            auctionFetching, auction, auctionError,
-            orderFetching, order, orderError,
+            auctionFetching,
+            auction,
+            auctionError,
             createAuction
         } = this.props;
 
@@ -45,14 +41,6 @@ class Auction extends React.PureComponent {
                              error={auctionError}
                              response={auction}
                              action={createAuction}/>
-
-                {auction &&
-                <TradeAction title="Place Bid"
-                             fetching={orderFetching}
-                             error={orderError}
-                             response={order}
-                             action={this._placeBid}/>
-                }
             </Grid>
         );
     }
@@ -67,4 +55,4 @@ const stateMap = (
     orderFetching, order, orderError
 });
 
-export default connect(stateMap, {createAuction, placeBid})(Auction);
+export default connect(stateMap, {createAuction})(Auction);

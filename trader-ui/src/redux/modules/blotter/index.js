@@ -15,6 +15,14 @@ const INITIAL_STATE = {
     messages: []
 };
 
+function upsert(messages, message) {
+    if (messages.some(m => m.id === message.id)) {
+        return messages.map(m => m.id === message.id ? message : m)
+    } else {
+        return [...messages, message];
+    }
+}
+
 function blotter(state = INITIAL_STATE, action) {
     switch (action.type) {
         case CONNECTION_STATE:
@@ -25,6 +33,7 @@ function blotter(state = INITIAL_STATE, action) {
                 connectionState: message
             };
         case BLOTTER_UPDATE: {
+            const {messages} = state;
             const {message} = action;
             const {lastSeq} = message;
 
@@ -36,7 +45,7 @@ function blotter(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 lastSeq,
-                messages: [message, ...state.messages.filter(({id}) => id !== message.id)]
+                messages: upsert(messages, message)
             };
         }
         default:
