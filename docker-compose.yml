@@ -113,3 +113,15 @@ services:
       - event-sourcing-db
       - message-bus
     restart: on-failure
+
+  auction-capture:
+    image: node:latest
+    hostname: auction-capture
+    container_name: auction-capture
+    working_dir: /home/node/app
+    volumes:
+      - ./auction-capture/:/home/node/app
+    command: bash -c "npm install && node index.js"
+    depends_on:
+      - message-bus
+    restart: on-failure

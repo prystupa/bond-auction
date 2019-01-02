@@ -27,7 +27,7 @@ async function auctionRunner(auctionId) {
             state = auctionReducer(state, event);
             if (!quiet) {
                 const payload = JSON.stringify(state);
-                console.log(`Publishing ${payload} to exchange ${BLOTTER_EXCHANGE}`);
+                console.log(`Publishing ${payload} with ${event.key} key to exchange ${BLOTTER_EXCHANGE}`);
                 publishChannel.publish(BLOTTER_EXCHANGE, event.key, Buffer.from(payload));
             }
             lastSeq = seq;

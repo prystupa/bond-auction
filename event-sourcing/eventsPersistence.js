@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 let seq;
 
 const eventSchema = new mongoose.Schema({
+    key: String,
     auction: Object,
     order: Object,
     seq: Number
