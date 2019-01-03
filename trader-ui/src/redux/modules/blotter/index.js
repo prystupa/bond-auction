@@ -1,7 +1,7 @@
 import {RxStompState} from "@stomp/rx-stomp";
 import {ofType} from "redux-observable";
 import {flatMap, takeUntil} from "rxjs/operators";
-import {BLOTTER_UPDATE, CONNECTION_STATE, subscribe} from "./service";
+import {BLOTTER_SNAPSHOT, BLOTTER_UPDATE, CONNECTION_STATE, subscribe} from "./service";
 
 const BLOTTER_SUBSCRIBE = "blotter://subscribe";
 const BLOTTER_UNSUBSCRIBE = "blotter://unsubscribe";
@@ -32,6 +32,16 @@ function blotter(state = INITIAL_STATE, action) {
                 ...state,
                 connectionState: message
             };
+        case BLOTTER_SNAPSHOT: {
+            const {messages} = action;
+
+            const lastSeq = Math.max(...messages.map(({lastSeq}) => lastSeq));
+            return {
+                ...state,
+                messages,
+                lastSeq
+            };
+        }
         case BLOTTER_UPDATE: {
             const {messages} = state;
             const {message} = action;

@@ -1,5 +1,6 @@
 const express = require('express');
 const requireAuthentication = require('./requireAuthentication');
+const handleGetAuctions = require('./handleGetAuctions');
 const handleCreateAuction = require('./handleCreateAuction');
 const handleSendOrder = require('./handleSendOrder');
 
@@ -11,6 +12,7 @@ app.get('/', (req, res) => {
     res.send('Hello from bond-auction REST services!');
 });
 
+app.get('/api/auctions', requireAuthentication, handleGetAuctions);
 app.post('/api/auctions', requireAuthentication, handleCreateAuction);
 app.post('/api/auctions/:id/orders', requireAuthentication, handleSendOrder);
 
