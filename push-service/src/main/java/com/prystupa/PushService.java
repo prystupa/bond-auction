@@ -7,12 +7,17 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.ext.stomp.StompServer;
 import io.vertx.ext.stomp.StompServerHandler;
 import io.vertx.ext.stomp.StompServerOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class PushService extends AbstractVerticle {
+    private static Logger logger = LoggerFactory.getLogger(PushService.class);
+
     @Override
     public void start(Future<Void> startFuture) throws IOException {
+        logger.info("Starting push service");
 
         StompServerOptions stompServerOptions = new StompServerOptions()
                 .setPort(-1)
@@ -30,6 +35,7 @@ public class PushService extends AbstractVerticle {
                 .websocketHandler(stompServer.webSocketHandler())
                 .listen(8083, result -> {
                     if (result.succeeded()) {
+                        logger.info("Started webscoket STOMP server");
                         startFuture.complete();
                     } else {
                         startFuture.fail(result.cause());
