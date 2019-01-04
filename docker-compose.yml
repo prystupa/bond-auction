@@ -36,7 +36,7 @@ services:
     image: nginx
     container_name: web
     volumes:
-      - ./web/config.nginx:/etc/nginx/nginx.conf
+      - ./config/config.nginx:/etc/nginx/nginx.conf
       - ./config/insecure.pem:/etc/ssl/insecure.pem
       - ./config/insecure.key:/etc/ssl/insecure.key
       - ./config/dhparam-insecure.pem:/etc/ssl/dhparam-insecure.pem
