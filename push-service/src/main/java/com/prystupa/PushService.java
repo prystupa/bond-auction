@@ -35,7 +35,7 @@ public class PushService extends AbstractVerticle {
                 .websocketHandler(stompServer.webSocketHandler())
                 .listen(8083, result -> {
                     if (result.succeeded()) {
-                        logger.info("Started webscoket STOMP server");
+                        logger.info("Started websocket STOMP server");
                         startFuture.complete();
                     } else {
                         startFuture.fail(result.cause());
