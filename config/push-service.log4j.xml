@@ -5,6 +5,9 @@
         </Console>
     </Appenders>
     <Loggers>
+        <Logger name="com.prystupa" level="trace" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
         <Root level="info">
             <AppenderRef ref="console"/>
         </Root>

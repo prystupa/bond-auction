@@ -26,6 +26,7 @@ public class PushService extends AbstractVerticle {
                 .setWebsocketPath("/ws");
         StompServer stompServer = StompServer.create(vertx, stompServerOptions)
                 .handler(StompServerHandler.create(vertx)
+                        .destinationFactory(RabbitDestination::factory)
                         .authProvider(new OktaAuthProvider())
                         .connectHandler(new OktaConnectHandler()));
 
