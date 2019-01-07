@@ -41,7 +41,7 @@ public class OktaConnectHandler extends DefaultConnectHandler {
             String user = jwt.getClaims().get("sub").toString();
 
             Map<String, String> headers = sf.frame().getHeaders().entrySet().stream()
-                    .filter(e -> e.getKey().equals(Frame.LOGIN))
+                    .filter(e -> !e.getKey().equals(Frame.LOGIN))
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
             headers.put(Frame.LOGIN, user);
             sf.frame().setHeaders(headers);
