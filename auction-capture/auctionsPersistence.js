@@ -15,6 +15,9 @@ const initialized = mongoose.connect('mongodb://event-sourcing-db/auctions')
     .then(async () => {
         console.log('Connected to event sourcing database, auctions collection');
         await Auction.ensureIndexes();
+    }).catch(error => {
+        console.error(`Something went wrong, ${error}`);
+        process.exit(1);
     });
 
 async function saveAuction(auction) {

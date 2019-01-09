@@ -126,5 +126,6 @@ services:
       - ./auction-capture/:/home/node/app
     command: bash -c "npm install && node index.js"
     depends_on:
+      - event-sourcing-db
       - message-bus
     restart: on-failure
