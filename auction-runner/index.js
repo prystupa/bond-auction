@@ -7,8 +7,17 @@ const EVENTS_EXCHANGE = "events";
 const BLOTTER_EXCHANGE = "blotter";
 const CREATE_AUCTION_QUEUE = "create-auction";
 
+function exitOnError(error) {
+    if (error) {
+        console.error(`Something went wrong, ${error}`);
+        process.exit(1);
+    }
+}
+
 async function provisionAuctions() {
     const connection = await amqp.connect('amqp://message-bus');
+    connection.on('close', exitOnError);
+    connection.on('error', exitOnError);
 
     // input messaging infrastructure
     const channel = await connection.createChannel();
@@ -31,7 +40,4 @@ async function provisionAuctions() {
 }
 
 provisionAuctions()
-    .catch(error => {
-        console.error(`Something went wrong, ${error}`);
-        process.exit(1);
-    });
+    .catch(exitOnError);
