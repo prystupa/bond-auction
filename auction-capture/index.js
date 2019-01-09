@@ -5,8 +5,17 @@ const amqp = require('amqplib');
 
 const BLOTTER_EXCHANGE = "blotter";
 
+function exitOnError(error) {
+    if (error) {
+        console.error(`Something went wrong, ${error}`);
+        process.exit(1);
+    }
+}
+
 async function startAuctionCapture() {
     const connection = await amqp.connect('amqp://message-bus');
+    connection.on('close', exitOnError);
+    connection.on('error', exitOnError);
 
     // output messaging infrastructure
     const channel = await connection.createChannel();
@@ -26,7 +35,4 @@ async function startAuctionCapture() {
 }
 
 startAuctionCapture()
-    .catch(error => {
-        console.error(`Something went wrong, ${error}`);
-        process.exit(1);
-    });
+    .catch(exitOnError);
