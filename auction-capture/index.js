@@ -36,7 +36,7 @@ async function startAuctionCapture() {
 
         const action = JSON.parse(content);
         await saveAuction(action);
-    }, {noAck: false});
+    }, {noAck: true});
 }
 
 startAuctionCapture()
