@@ -18,13 +18,7 @@ docker-compose up -d --scale auction-runner=2
 ```
 
 ### Backlog
-- Implement service to fetch a snapshot of the blotter, wire UI to call it
-to populate the blotter with snapshot (currently blotter onbly populated
-via real-time updates)
-- Replace RabbitMQ STOMP bridge with Vert.x based STOMP push-service, 
-have client authenticate itself sending accessToken in Connect frame,
-use JWT verifier to authenticate/authorize blotter subscription 
-(follow rest-service pattern)
+- name temporary queues with functional prefix, so it is easier to debug and troubleshoot
 - Add a simple field to auction called "openTo", which is a list of 
 users allowed to participate. Use this field to demonstrate attribute-based
 entitlements (i.e. auction is only broadcast to blotters of allowed
