@@ -27,3 +27,15 @@ participants)
 different participants and demonstrate both functional and non-functional
 capabilities of the POC
 
+### Demo Script
+- quickly walk over poject structure in IntelliJ to show the breadth of the prototype, including:
+  - UI
+  - fontend proxy, scalability, https/wss
+  - rest frontend services
+  - push frontend services
+  - message bus
+  - database
+  - event sourcing services
+  - auction execution engines
+- run ```docker-compose up -d --scale auction-runner=2``` to demonstrate how the whole environment comes up in minutes and ready to work with/develop with
+- start two web browser windows side-by-side and navigate to the app: [https://localhost:8443](https://localhost:8443), optionally demonstrate https access is enforced
