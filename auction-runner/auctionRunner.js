@@ -1,10 +1,13 @@
 const request = require('request-promise-native');
 const amqp = require('amqplib');
-
 const auctionReducer = require('./auctionReducer');
 
 const EVENTS_EXCHANGE = "events";
 const BLOTTER_EXCHANGE = "blotter";
+
+async function tempQueue(channel, auctionId) {
+    return channel.assertQueue(`auction-runner-${auctionId}`, {exclusive: true, autoDelete: true});
+}
 
 async function auctionRunner(auctionId) {
     console.log(`Starting auction handler for ${auctionId}`);
@@ -13,7 +16,7 @@ async function auctionRunner(auctionId) {
     const channel = await connection.createChannel();
     const publishChannel = await connection.createChannel();
 
-    const queue = await channel.assertQueue('', {exclusive: true});
+    const queue = await tempQueue(channel, auctionId);
     channel.bindQueue(queue.queue, EVENTS_EXCHANGE, `auction.${auctionId}.#`);
 
     let state = undefined;
