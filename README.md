@@ -39,3 +39,5 @@ capabilities of the POC
   - auction execution engines
 - run ```docker-compose up -d --scale auction-runner=2``` to demonstrate how the whole environment comes up in minutes and ready to work with/develop with
 - start two web browser windows side-by-side and navigate to the app: [https://localhost:8443](https://localhost:8443), optionally demonstrate https access is enforced
+- login to the app as User-1 in one window and User-2 in another, demonstrate integration with Okta
+- demonstrate that UI application has established a webscoket connection (white WiFi icon) for realtime communication, demonstrate resiliency when forcing connection down by restarting proxy and/or push-services, simulating offline in Chrome
