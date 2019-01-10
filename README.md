@@ -50,3 +50,8 @@ capabilities of the POC
   - demonstrate blotter updates flow to both UIs in realtime
   - demonstrate each auciton-runner handles its own share of auctions
 - Using ```docker kill bond-auction_auction-runner_1``` demonstrate failover capabitlity by examining logs and confirming remaining instance took over the auctions from failed instance; demonstrate new bids are still coming through and flow to blotters
+- Demonstrate useful developer tools embedded in the framework:
+  - changes in UI reflected automatically (create-react-app)
+  - changes in push-services reflected automatically (Java, Vert.x)
+  - web dashboard for Mongo database for data mining/debugging/troubleshooting
+  - web dashboard for RabbitMQ queue for message mining/debugging/troubleshooting
