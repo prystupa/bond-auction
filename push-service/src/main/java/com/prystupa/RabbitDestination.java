@@ -14,6 +14,7 @@ import io.vertx.rabbitmq.RabbitMQOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -86,9 +87,9 @@ public class RabbitDestination extends Topic {
 
     private Future<String> declareQueue() {
         Future<JsonObject> queueDeclared = Future.future();
-        client.queueDeclareAuto(queueDeclared);
+        String queueName = "push-service-" + UUID.randomUUID();
+        client.queueDeclare(queueName, false, true, true, queueDeclared);
         return queueDeclared.compose(json -> {
-            String queueName = json.getString("queue");
             logger.debug("Succeeded in declaring a queue: {} for {}", queueName);
             return queueDeclared.map(queueName);
         });
