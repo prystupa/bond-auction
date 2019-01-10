@@ -41,3 +41,11 @@ capabilities of the POC
 - start two web browser windows side-by-side and navigate to the app: [https://localhost:8443](https://localhost:8443), optionally demonstrate https access is enforced
 - login to the app as User-1 in one window and User-2 in another, demonstrate integration with Okta
 - demonstrate that UI application has established a webscoket connection (white WiFi icon) for realtime communication, demonstrate resiliency when forcing connection down by restarting proxy and/or push-services, simulating offline in Chrome
+- User-1 creates an auction by clicking button in UI, both users see the auction immediately in their blotters, demonstrate rest services/event-sourcing/push-services working
+  - demonstrate Okta integration on the service by examining rest services/push services logs, demonstrate Okta token validation and user identity (authentication) integration
+- User-2 creates an auction by clicking button in UI
+  - demonstrate new auction makes it to blotters of both users
+  - demoonstate auction engines scalability by observing auction-runners logs and sharing of the work by 2 instances
+- Do multiple bids on both auctions by both users
+  - demonstrate blotter updates flow to both UIs in realtime
+  - demonstrate each auciton-runner handles its own share of auctions
