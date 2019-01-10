@@ -14,7 +14,7 @@ async function sendEventMessage(event) {
 
     const payload = JSON.stringify(event);
     console.log(`Publishing ${payload} to exchange ${EVENTS_EXCHANGE}`);
-    channel.publish(EVENTS_EXCHANGE, event.key, Buffer.from(payload));
+    channel.publish(EVENTS_EXCHANGE, event.key, Buffer.from(payload), {persistent: true});
     return channel.waitForConfirms().then(() => connection.close());
 }
 
