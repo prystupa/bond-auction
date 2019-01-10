@@ -8,15 +8,12 @@ import io.vertx.ext.stomp.Destination;
 import io.vertx.ext.stomp.Frame;
 import io.vertx.ext.stomp.StompServerConnection;
 import io.vertx.ext.stomp.impl.Topic;
-import io.vertx.ext.stomp.utils.Headers;
 import io.vertx.rabbitmq.RabbitMQClient;
 import io.vertx.rabbitmq.RabbitMQConsumer;
-import io.vertx.rabbitmq.RabbitMQMessage;
 import io.vertx.rabbitmq.RabbitMQOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -110,19 +107,13 @@ public class RabbitDestination extends Topic {
         Future<RabbitMQConsumer> consumerSetup = Future.future();
         client.basicConsumer(queueName, consumerSetup);
         return consumerSetup.compose(consumer -> {
-            consumer.handler(message -> dispatch(null, convert(message)));
+            consumer.handler(message -> {
+                logger.debug("Message arrived, dispatching: {}", message.body().toString());
+                dispatch(null, new Frame().setBody(message.body()));
+            });
 
             logger.debug("Setup consumer {} for {}", consumer.consumerTag(), queueName);
             return consumerSetup;
         });
-    }
-
-    private Frame convert(RabbitMQMessage message) {
-        logger.debug("Message arrived: {}", message.body().toString());
-
-        return new Frame()
-                .setHeaders(Headers.create())
-                .setCommand(Frame.Command.MESSAGE)
-                .setBody(message.body());
     }
 }
