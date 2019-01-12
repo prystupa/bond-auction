@@ -12,6 +12,9 @@ import {
 import {connect} from "react-redux";
 import {placeBid} from "../../redux/modules/order";
 
+function nickname(email) {
+    return email.substring(0, email.indexOf("@"));
+}
 
 class Blotter extends React.PureComponent {
     _placeBidHandlers = {};
@@ -33,8 +36,7 @@ class Blotter extends React.PureComponent {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Created by</TableCell>
+                            <TableCell>Auction</TableCell>
                             <TableCell>Bids</TableCell>
                             <TableCell>Actions</TableCell>
                         </TableRow>
@@ -42,13 +44,20 @@ class Blotter extends React.PureComponent {
                     <TableBody>
                         {messages.map((message, index) =>
                             <TableRow key={`message-${index}`}>
-                                <TableCell>{message.id}</TableCell>
-                                <TableCell>{message.createdBy}</TableCell>
-                                <TableCell>{message.events.join(', ')}</TableCell>
+                                <TableCell>
+                                    <div>{message.id}</div>
+                                    <div>{`${nickname(message.created.userId)} (${message.created.seq})`}</div>
+                                </TableCell>
+                                <TableCell>
+                                    {message.montage.map(({userId, seq}) => (
+                                        <div key={seq}>{`${nickname(userId)} (${seq})`}</div>
+                                    ))}
+                                </TableCell>
                                 <TableCell>
                                     <Button size="small" color="primary"
-                                            onClick={this._placeBidHandler(message.id)}>Place
-                                        Bid</Button>
+                                            onClick={this._placeBidHandler(message.id)}>
+                                        Bid
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         )}

@@ -2,8 +2,11 @@ const mongoose = require('mongoose');
 
 const auctionSchema = new mongoose.Schema({
     id: String,
-    events: Object,
-    createdBy: String,
+    created: {
+        userId: String,
+        seq: Number
+    },
+    montage: Object,
     lastSeq: Number
 });
 
