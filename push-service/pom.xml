@@ -19,6 +19,7 @@
         <log4j.version>2.11.1</log4j.version>
         <vertx.version>3.6.2</vertx.version>
         <vertx-maven-plugin.version>1.0.13</vertx-maven-plugin.version>
+        <rxjava.version>2.2.5</rxjava.version>
 
         <vertx.verticle>com.prystupa.PushService</vertx.verticle>
     </properties>
@@ -39,6 +40,18 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-rabbitmq-client</artifactId>
             <version>${vertx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-rx-java</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+
+        <!-- RxJava 2 -->
+        <dependency>
+            <groupId>io.reactivex.rxjava2</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>${rxjava.version}</version>
         </dependency>
 
         <!-- Okta -->

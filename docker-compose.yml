@@ -7,6 +7,7 @@ version: "3.7"
 # 8081 - mongo express Web UI
 # 8082 - RabbitMQ web UI
 # 8083 - temporarily testing Vert.x
+# 5005 - debugging port for Java push-service when vertx:debug
 
 services:
   message-bus:
@@ -69,9 +70,8 @@ services:
       - ./push-service/:/home/app
       - ./push-service/.m2/:/root/.m2
       - ./config/push-service.log4j.xml:/home/config/log4j.xml
-    ports: []
-      # debugger port used by vertx:debug
-      # - 5005:5005
+    ports:
+      - 5005:5005
     environment:
       - APP_OKTA_CLIENT_ID
       - APP_OKTA_ORG_URL
