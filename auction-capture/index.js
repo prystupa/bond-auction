@@ -24,7 +24,7 @@ async function startAuctionCapture() {
 
     // output messaging infrastructure
     const channel = await connection.createChannel();
-    await channel.assertExchange(BLOTTER_EXCHANGE, 'topic', {durable: false});
+    await channel.assertExchange(BLOTTER_EXCHANGE, 'topic', {durable: true});
 
     const queue = await tempQueue(channel);
     channel.bindQueue(queue.queue, BLOTTER_EXCHANGE, 'auction.#');

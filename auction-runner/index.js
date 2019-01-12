@@ -27,7 +27,7 @@ async function provisionAuctions() {
 
     // output messaging infrastructure
     const publishChannel = await connection.createChannel();
-    await publishChannel.assertExchange(BLOTTER_EXCHANGE, 'topic', {durable: false});
+    await publishChannel.assertExchange(BLOTTER_EXCHANGE, 'topic', {durable: true});
 
     console.log(`Waiting to receive message from queue ${CREATE_AUCTION_QUEUE}`);
     return channel.consume(CREATE_AUCTION_QUEUE, (msg) => {
