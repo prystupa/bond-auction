@@ -2,6 +2,7 @@ package com.prystupa;
 
 import com.rabbitmq.client.*;
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.BehaviorSubject;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -13,7 +14,9 @@ import io.vertx.ext.stomp.impl.Topic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,6 +24,7 @@ import java.util.regex.Pattern;
 public class RabbitDestination extends Topic {
     private static Logger logger = LoggerFactory.getLogger(RabbitDestination.class);
     private static Pattern destinationPattern = Pattern.compile("/exchange/(?<exchange>.+)/(?<pattern>.+)");
+    private final List<RxSubscription> subscriptions = new ArrayList<>();
     private final Observable<byte[]> messages;
 
     static Destination factory(Vertx vertx, String name, Connection rabbitConnection) {
@@ -82,7 +86,7 @@ public class RabbitDestination extends Topic {
 
         logger.debug("Handling Subscribe frame to {} for {}...", frame.getDestination(), userId);
 
-        messages.subscribe(message -> {
+        Disposable disposable = messages.subscribe(message -> {
             logger.debug("Message arrived, dispatching to {}: {}", userId, new String(message));
 
             Frame stompFrame = transform(
@@ -95,14 +99,55 @@ public class RabbitDestination extends Topic {
             connection.close();
         });
 
+        subscriptions.add(new RxSubscription(connection, frame, userId, disposable));
         super.subscribe(connection, frame);
         logger.debug("Added new subscription, now have {}", subscriptions.size());
         return this;
     }
 
+    @Override
+    public synchronized boolean unsubscribe(StompServerConnection connection, Frame frame) {
+
+        for (RxSubscription subscription : subscriptions) {
+            if (subscription.connection.equals(connection) && subscription.id.equals(frame.getId())) {
+                logger.debug("Disposing of subscription {} for {}", subscription.id, subscription.userId);
+                subscription.disposable.dispose();
+                subscriptions.remove(subscription);
+                break;
+            }
+        }
+        return super.unsubscribe(connection, frame);
+    }
+
+    @Override
+    public synchronized Destination unsubscribeConnection(StompServerConnection connection) {
+        new ArrayList<>(subscriptions).stream()
+                .filter(subscription -> subscription.connection.equals(connection))
+                .forEach(subscription -> {
+                    logger.debug("Disposing of subscription {} for {}", subscription.id, subscription.userId);
+                    subscription.disposable.dispose();
+                    subscriptions.remove(subscription);
+                });
+        return super.unsubscribeConnection(connection);
+    }
+
     private static class StompSubscription extends Subscription {
         StompSubscription(StompServerConnection connection, Frame frame) {
             super(connection, frame);
+        }
+    }
+
+    private static class RxSubscription {
+        StompServerConnection connection;
+        String id;
+        String userId;
+        Disposable disposable;
+
+        RxSubscription(StompServerConnection connection, Frame frame, String userId, Disposable disposable) {
+            this.connection = connection;
+            this.id = frame.getId();
+            this.userId = userId;
+            this.disposable = disposable;
         }
     }
 }
