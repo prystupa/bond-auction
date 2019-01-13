@@ -1,25 +1,10 @@
 import * as React from "react";
-import {CircularProgress, Button, Grid} from "@material-ui/core";
+import {CircularProgress, Button, Grid, InputLabel, Input, FormControl, InputAdornment} from "@material-ui/core";
 import {Done, ErrorOutline as Error} from "@material-ui/icons";
 import {connect} from "react-redux";
 
 import {createAuction} from "../../redux/modules/auction";
 
-function TradeAction({title, fetching, response, error, action}) {
-    return (
-        <>
-            <Grid container={true} item={true} alignItems="center" spacing={8}>
-                <Grid item={true}>
-                    <Button variant="contained" onClick={action}>{title}</Button>
-                </Grid>
-                {fetching &&
-                <Grid item={true}><CircularProgress size={20}/></Grid>}
-                {!fetching && response && <Grid item={true}><Done color="primary"/></Grid>}
-                {error && <Grid item={true}><Error color="error"/></Grid>}
-            </Grid>
-        </>
-    );
-}
 
 class Auction extends React.PureComponent {
 
@@ -28,16 +13,28 @@ class Auction extends React.PureComponent {
             auctionFetching,
             auction,
             auctionError,
+            openTo,
             createAuction
         } = this.props;
 
         return (
-            <Grid container={true} spacing={8}>
-                <TradeAction title="Create Auction"
-                             fetching={auctionFetching}
-                             error={auctionError}
-                             response={auction}
-                             action={createAuction}/>
+            <Grid container={true} spacing={8} alignItems="flex-end">
+                <Grid item={true} xs={11}>
+                    <FormControl fullWidth={true}>
+                        <InputLabel htmlFor="auction-open-to">Open To</InputLabel>
+                        <Input id="auction-open-to"
+                               value={openTo}
+                               endAdornment={
+                                   <InputAdornment position={"end"}>
+                                       <Button variant="text" onClick={createAuction}>Create</Button>
+                                   </InputAdornment>
+                               }/>
+                    </FormControl>
+                </Grid>
+                {auctionFetching &&
+                <Grid item={true} xs={1}><CircularProgress size={20}/></Grid>}
+                {!auctionFetching && auction && <Grid item={true}><Done color="primary"/></Grid>}
+                {auctionError && <Grid item={true} xs={1}><Error color="error"/></Grid>}
             </Grid>
         );
     }
@@ -45,10 +42,10 @@ class Auction extends React.PureComponent {
 
 const stateMap = (
     {
-        auction: {fetching: auctionFetching, auction, error: auctionError},
+        auction: {fetching: auctionFetching, auction, error: auctionError, openTo},
         order: {fetching: orderFetching, order, error: orderError}
     }) => ({
-    auctionFetching, auction, auctionError,
+    auctionFetching, auction, auctionError, openTo,
     orderFetching, order, orderError
 });
 

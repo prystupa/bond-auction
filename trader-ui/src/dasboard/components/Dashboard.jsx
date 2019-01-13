@@ -31,6 +31,9 @@ class Dashboard extends React.PureComponent {
                     <Typography variant="body1">Welcome, {name}</Typography>
                 </Grid>
                 <Grid item={true} xs={12}>
+                    <Typography variant={"h6"}>Auction</Typography>
+                </Grid>
+                <Grid item={true} xs={12}>
                     <Auction/>
                 </Grid>
                 <Grid item={true} xs={12}>
