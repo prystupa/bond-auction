@@ -1,14 +1,17 @@
 import * as React from "react";
 import {
     Button,
+    Grid,
     Paper,
     Table,
     TableHead,
     TableBody,
     TableRow,
     TableCell,
-    TableFooter
+    TableFooter,
+    Tooltip
 } from "@material-ui/core";
+import {Security} from "@material-ui/icons";
 import {connect} from "react-redux";
 import {placeBid} from "../../redux/modules/order";
 
@@ -45,8 +48,20 @@ class Blotter extends React.PureComponent {
                         {messages.map((message, index) =>
                             <TableRow key={`message-${index}`}>
                                 <TableCell>
-                                    <div>{message.id}</div>
-                                    <div>{`${nickname(message.created.userId)} (${message.created.seq})`}</div>
+                                    <Grid container={true} spacing={8} wrap="nowrap">
+                                        <Grid item={true}>
+                                            <Tooltip title={
+                                                <pre>
+                                                    {JSON.stringify(message.entitlements, null, 2)}
+                                                </pre>}>
+                                                <Security/>
+                                            </Tooltip>
+                                        </Grid>
+                                        <Grid item={true}>
+                                            {message.id}
+                                            <div>{`${nickname(message.created.userId)} (${message.created.seq})`}</div>
+                                        </Grid>
+                                    </Grid>
                                 </TableCell>
                                 <TableCell>
                                     {message.montage.map(({userId, seq}) => (

@@ -1,12 +1,18 @@
 import * as React from "react";
+import PropTypes from "prop-types";
 import {CircularProgress, Button, Grid, InputLabel, Input, FormControl, InputAdornment} from "@material-ui/core";
 import {Done, ErrorOutline as Error} from "@material-ui/icons";
 import {connect} from "react-redux";
 
-import {createAuction} from "../../redux/modules/auction";
+import {createAuction, updateAuctionOpenTo} from "../../redux/modules/auction";
 
 
 class Auction extends React.PureComponent {
+
+    _onOpenToChange = (e) => {
+        const {updateAuctionOpenTo} = this.props;
+        updateAuctionOpenTo(e.target.value);
+    };
 
     render() {
         const {
@@ -24,6 +30,7 @@ class Auction extends React.PureComponent {
                         <InputLabel htmlFor="auction-open-to">Open To</InputLabel>
                         <Input id="auction-open-to"
                                value={openTo}
+                               onChange={this._onOpenToChange}
                                endAdornment={
                                    <InputAdornment position={"end"}>
                                        <Button variant="text" onClick={createAuction}>Create</Button>
@@ -38,6 +45,11 @@ class Auction extends React.PureComponent {
             </Grid>
         );
     }
+
+    static propTypes = {
+        createAuction: PropTypes.func.isRequired,
+        updateAuctionOpenTo: PropTypes.func.isRequired
+    };
 }
 
 const stateMap = (
@@ -49,4 +61,4 @@ const stateMap = (
     orderFetching, order, orderError
 });
 
-export default connect(stateMap, {createAuction})(Auction);
+export default connect(stateMap, {createAuction, updateAuctionOpenTo})(Auction);
