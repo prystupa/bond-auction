@@ -9,6 +9,10 @@ function updateMontage(montage, order, seq) {
     ];
 }
 
+function viewEntitlements(openTo = '') {
+    return openTo.split(/[, ]+/).filter(s => s !== '');
+}
+
 // mock auction logic - last bidder always moves to the top
 function auctionReducer(state = {
     id: undefined,
@@ -16,7 +20,7 @@ function auctionReducer(state = {
     montage: [],
     lastSeq: undefined
 }, event) {
-    const {seq, auction: {id, createdBy}, order} = event;
+    const {seq, auction: {id, createdBy, openTo}, order} = event;
     const {montage} = state;
 
     if (createdBy) {
@@ -27,6 +31,9 @@ function auctionReducer(state = {
             created: {
                 userId: createdBy,
                 seq
+            },
+            entitlements: {
+                view: [`id:${createdBy}`, ...viewEntitlements(openTo)]
             },
             lastSeq: seq,
         }

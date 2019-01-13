@@ -6,7 +6,13 @@ const auctionSchema = new mongoose.Schema({
         userId: String,
         seq: Number
     },
-    montage: Object,
+    montage: [{
+        userId: String,
+        seq: Number
+    }],
+    entitlements: {
+        view: [String]
+    },
     lastSeq: Number
 });
 
