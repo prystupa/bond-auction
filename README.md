@@ -38,7 +38,7 @@ participants)
 - run ```docker-compose up -d --scale auction-runner=2``` to demonstrate how the whole environment comes up in minutes and ready to work with/develop with
 - start two web browser windows side-by-side and navigate to the app: [https://localhost:8443](https://localhost:8443), optionally demonstrate https access is enforced (make sure windows are independent, i.e. they don't share user session)
 - login to the app as User-1 in one window and User-2 in another, demonstrate integration with Okta
-- demonstrate that UI application has established a webscoket connection (white WiFi icon) for realtime communication, demonstrate resiliency when forcing connection down by restarting proxy and/or push-services, simulating offline in Chrome
+- demonstrate that UI application has established a webscoket connection (white WiFi icon) for realtime communication, demonstrate resiliency when forcing connection down by restarting proxy (web), push-service, message-bus
 - User-1 creates an auction by clicking button in UI, both users see the auction immediately in their blotters, demonstrate rest services/event-sourcing/push-services working
   - demonstrate Okta integration on the service by examining rest services/push services logs, demonstrate Okta token validation and user identity (authentication) integration
 - User-2 creates an auction by clicking button in UI
