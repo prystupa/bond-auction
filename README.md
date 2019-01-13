@@ -2,7 +2,8 @@
 This is a POC for a bond auction trading system. It implements a containerized solution per 
 [the following diagram](https://www.lucidchart.com/documents/view/6427cfaa-a124-4702-a176-be56f61e8cc4).
 Before you begin you need to have a valid Okta organization URL and client ID. 
-If you don't have one you can create a free developer organization at [Okta Developer](https://developer.okta.com) and create a few test users.
+If you don't have one you can create a free developer organization at [Okta Developer](https://developer.okta.com) and create an application with a few test users. When configuring an application, make sure it's **Login Redirect URLs** contains 
+https://localhost:8443/implicit/callback
 
 Then export your client ID and organization URL, then run docker-compose:
 
