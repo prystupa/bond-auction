@@ -1,5 +1,6 @@
 # bond-auction POC
-POC for bond auction trading system.
+This is a POC for a bond auction trading system. It implements a containerized solution per 
+[the following diagram](https://www.lucidchart.com/documents/view/6427cfaa-a124-4702-a176-be56f61e8cc4).
 Before you begin you need to have a valid Okta organization URL and client ID. 
 If you don't have one you can create a free developer organization at [Okta Developer](https://developer.okta.com).
 
