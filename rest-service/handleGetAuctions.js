@@ -16,8 +16,20 @@ function searchAuctions(query) {
     return Auction.find(query).exec();
 }
 
+function userTokens(userId) {
+    const [names, domains] = userId.split("@");
+    return [
+        `id:${userId}`,
+        ...names.split('.').map(name => `name:${name}`),
+        ...domains.split('.').map(domain => `domain:${domain}`)
+    ];
+}
+
 async function handleGetAuctions(req, res) {
-    const auctions = await searchAuctions({});
+    const tokens = userTokens(req.jwt.claims.sub);
+    const auctions = await searchAuctions({
+        'entitlements.view': {$in: tokens}
+    });
     res.send(auctions);
 }
 
