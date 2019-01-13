@@ -7,6 +7,7 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
 import io.vertx.ext.stomp.Destination;
 import io.vertx.ext.stomp.Frame;
@@ -15,12 +16,11 @@ import io.vertx.ext.stomp.impl.Topic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RabbitDestination extends Topic {
     private static Logger logger = LoggerFactory.getLogger(RabbitDestination.class);
@@ -84,26 +84,40 @@ public class RabbitDestination extends Topic {
 
         User user = connection.handler().getUserBySession(connection.session());
         String userId = user.principal().getString("user");
+        Set<String> userTokens = getUserViewEntitlements(userId);
 
         logger.debug("Handling Subscribe frame to {} for {}...", frame.getDestination(), userId);
 
-        Disposable disposable = messages.subscribe(message -> {
-            logger.debug("Message arrived, dispatching to {}: {}", userId, new String(message));
+        Disposable disposable = messages
+                .filter(message -> checkMessageEntitlements(message, userTokens))
+                .subscribe(message -> {
+                    logger.debug("Message arrived, dispatching to {}: {}", userId, new String(message));
 
-            Frame stompFrame = transform(
-                    new Frame().setBody(Buffer.buffer(message)),
-                    new StompSubscription(connection, frame),
-                    UUID.randomUUID().toString());
-            connection.write(stompFrame);
-        }, error -> {
-            connection.write(new Frame(Frame.Command.ERROR, Collections.emptyMap(), Buffer.buffer()));
-            connection.close();
-        });
+                    Frame stompFrame = transform(
+                            new Frame().setBody(Buffer.buffer(message)),
+                            new StompSubscription(connection, frame),
+                            UUID.randomUUID().toString());
+                    connection.write(stompFrame);
+                }, error -> {
+                    connection.write(new Frame(Frame.Command.ERROR, Collections.emptyMap(), Buffer.buffer()));
+                    connection.close();
+                });
 
         subscriptions.add(new RxSubscription(connection, frame, userId, disposable));
         super.subscribe(connection, frame);
         logger.debug("Added new subscription, now have {}", subscriptions.size());
         return this;
+    }
+
+    private boolean checkMessageEntitlements(byte[] message, Set<String> userTokens) {
+
+        JsonObject node = new JsonObject(Buffer.buffer(message));
+        Set<String> viewTokens = node.getJsonObject("entitlements").getJsonArray("view")
+                .stream()
+                .map(Object::toString)
+                .collect(Collectors.toSet());
+
+        return userTokens.stream().anyMatch(viewTokens::contains);
     }
 
     @Override
@@ -136,6 +150,15 @@ public class RabbitDestination extends Topic {
         StompSubscription(StompServerConnection connection, Frame frame) {
             super(connection, frame);
         }
+    }
+
+    private Set<String> getUserViewEntitlements(String userId) {
+        String[] parts = userId.split("@");
+        return Stream.concat(Stream.concat(
+                Stream.of("id:" + userId),
+                Arrays.stream(parts[0].split("\\.")).map(name -> "name:" + name)),
+                Arrays.stream(parts[1].split("\\.")).map(domain -> "domain:" + domain))
+                .collect(Collectors.toSet());
     }
 
     private static class RxSubscription {
