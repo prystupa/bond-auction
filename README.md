@@ -51,5 +51,5 @@ participants)
 - Demonstrate useful developer tools embedded in the framework:
   - changes in UI reflected automatically (create-react-app)
   - changes in push-services reflected automatically (Java, Vert.x)
-  - web dashboard for Mongo database for data mining/debugging/troubleshooting
-  - web dashboard for RabbitMQ queue for message mining/debugging/troubleshooting
+  - [web dashboard](http://localhost:8081) for Mongo database for data mining/debugging/troubleshooting
+  - [web dashboard](http://localhost:8082) for RabbitMQ queue for message mining/debugging/troubleshooting
