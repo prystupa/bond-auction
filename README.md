@@ -20,10 +20,7 @@ docker-compose up -d --scale auction-runner=2
 ```
 
 ### Backlog
-- Add a simple field to auction called "openTo", which is a list of 
-users allowed to participate. Use this field to demonstrate attribute-based
-entitlements (i.e. auction is only broadcast to blotters of allowed
-participants)
+- All caught up for now!
 
 
 ### Demo Script
