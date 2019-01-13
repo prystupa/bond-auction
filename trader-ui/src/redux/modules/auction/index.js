@@ -10,6 +10,7 @@ const auctionCreated = (auction) => ({type: AUCTION_CREATED, auction});
 const createAuctionFailed = (error) => ({type: AUCTION_CREATE_FAILED, error});
 
 const INITIAL_STATE = {
+    openTo: 'domain:com',
     fetching: false,
     auction: null,
     error: null
@@ -50,14 +51,20 @@ function createAuctionEpic(action$, state$) {
         ofType(AUCTION_CREATE),
         flatMap(async () => {
                 try {
-                    const {auth: {accessToken}} = state$.value;
+                    const {
+                        auction: {openTo},
+                        auth: {accessToken}
+                    } = state$.value;
                     const response = await fetch(
                         '/api/auctions',
                         {
                             method: 'POST',
                             headers: {
-                                Authorization: `Bearer ${accessToken}`
-                            }
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${accessToken}`
+                            },
+                            body: JSON.stringify({openTo})
                         });
 
                     const auction = await response.json();
