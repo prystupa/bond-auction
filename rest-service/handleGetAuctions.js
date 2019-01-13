@@ -3,8 +3,17 @@ const mongoose = require('mongoose');
 // TODO: this is a copy/paste from capture - refactor for reuse instead
 const auctionSchema = new mongoose.Schema({
     id: String,
-    events: Object,
-    createdBy: String,
+    created: {
+        userId: String,
+        seq: Number
+    },
+    montage: [{
+        userId: String,
+        seq: Number
+    }],
+    entitlements: {
+        view: [String]
+    },
     lastSeq: Number
 });
 
