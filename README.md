@@ -19,14 +19,11 @@ docker-compose up -d --scale auction-runner=2
 ```
 
 ### Backlog
-- name temporary queues with functional prefix, so it is easier to debug and troubleshoot
 - Add a simple field to auction called "openTo", which is a list of 
 users allowed to participate. Use this field to demonstrate attribute-based
 entitlements (i.e. auction is only broadcast to blotters of allowed
 participants)
-- Create a test script for demo that includes at least three
-different participants and demonstrate both functional and non-functional
-capabilities of the POC
+
 
 ### Demo Script
 - quickly walk over poject structure in IntelliJ to show the breadth of the prototype, including:
