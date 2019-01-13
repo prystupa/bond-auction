@@ -3,7 +3,8 @@ package com.prystupa;
 import com.rabbitmq.client.*;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.auth.User;
@@ -39,7 +40,7 @@ public class RabbitDestination extends Topic {
         try {
             String exchange = matcher.group("exchange");
             String pattern = matcher.group("pattern");
-            BehaviorSubject<byte[]> messages = BehaviorSubject.create();
+            Subject<byte[]> messages = PublishSubject.create();
 
             Channel channel = rabbitConnection.createChannel();
             String queue = "push-service-" + UUID.randomUUID();
